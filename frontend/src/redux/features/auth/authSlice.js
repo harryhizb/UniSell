@@ -21,7 +21,10 @@ const authSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload.user;
-      // Save user state to localStorage
+      // Check if token is returned from edit profile and needs update
+      if (action.payload.token) {
+        localStorage.setItem("token", action.payload.token);
+      }
       localStorage.setItem("user", JSON.stringify(state.user));
     },
     logout: (state) => {

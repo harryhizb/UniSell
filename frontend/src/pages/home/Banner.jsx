@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Banner = () => {
   return (
-    <header className="section__container header__container bg-gray-50">
+    <header className="section__container header__container bg-gray-100">
       <div className="header__content z-30 ">
         <h4>HERE YOU'LL FIND ALL YOU NEED</h4>
         <h1>Trending Deals</h1>

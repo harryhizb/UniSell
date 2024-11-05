@@ -5,68 +5,65 @@ export const orderApi = createApi({
   reducerPath: "orderApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${getBaseUrl()}/api/orders`,
-    credentials: "include",
+    credentials: "include", // Include credentials if needed
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem("token"); // Adjust as necessary for your token storage
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
   tagTypes: ["Order"],
   endpoints: (builder) => ({
-    // Fetch orders by email
-    getOrdersByEmail: builder.query({
-      query: (email) => ({
-        url: `/${email}`,
-        method: "GET",
+    // Place an order
+    placeOrder: builder.mutation({
+      query: (orderData) => ({
+        url: "/place-order",
+        method: "POST",
+        body: orderData,
       }),
+      invalidatesTags: ["Order"],
+    }),
+
+    // Fetch orders for the logged-in buyer
+    getMyOrders: builder.query({
+      query: () => `/my-orders`, // No parameters needed; just call the endpoint
       providesTags: ["Order"],
     }),
-    // Fetch order by ID
-    getOrderById: builder.query({
-      query: (orderId) => ({
-        url: `order/${orderId}`,
-        method: "GET",
-      }),
+
+    // Fetch orders received by the seller
+    getSellerOrders: builder.query({
+      query: ({ sellerId, page = 1, limit = 10 }) =>
+        `/seller/${sellerId}?page=${page}&limit=${limit}`,
       providesTags: ["Order"],
     }),
-    // Fetch all orders
-    getAllOrders: builder.query({
-      query: () => ({
-        url: "",
-        method: "GET",
-      }),
-      providesTags: ["Order"],
-    }),
-    // Fetch all orders by seller
-    getAllOrdersBySeller: builder.query({
-      query: (sellerId) => ({
-        url: `/seller/${sellerId}`, // Assuming your API has a specific endpoint for fetching seller orders
-        method: "GET",
-      }),
-      providesTags: ["Order"],
-    }),
+
+    // Update order status
     updateOrderStatus: builder.mutation({
       query: ({ id, status }) => ({
-        url: `/update-order-status/${id}`,
+        url: `/update-status/${id}`,
         method: "PATCH",
         body: { status },
       }),
       invalidatesTags: ["Order"],
     }),
-    deleteOrder: builder.mutation({
-      query: (id) => ({
-        url: `/delete-order/${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["Order"],
+
+    // Fetch all orders (if needed)
+    fetchAllOrders: builder.query({
+      query: () => `/`,
+      providesTags: ["Order"],
     }),
   }),
 });
 
-// Export the hooks
+// Export the hooks for use in components
 export const {
-  useGetOrdersByEmailQuery,
-  useGetOrderByIdQuery,
-  useGetAllOrdersQuery,
-  useGetAllOrdersBySellerQuery, // Export the new hook
+  usePlaceOrderMutation,
+  useGetMyOrdersQuery, // For fetching buyer's orders
+  useGetSellerOrdersQuery,
   useUpdateOrderStatusMutation,
-  useDeleteOrderMutation,
+  useFetchAllOrdersQuery,
 } = orderApi;
 
 export default orderApi;

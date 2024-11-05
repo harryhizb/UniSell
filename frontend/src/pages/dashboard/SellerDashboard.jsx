@@ -5,9 +5,11 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../../redux/features/auth/authSlice";
 
 const navItems = [
-  { path: "/dashboard", label: "Dashboard" },
+  // { path: "/dashboard", label: "Dashboard" },
   { path: "/dashboard/seller/manage-products", label: "Manage My Products" },
   { path: "/dashboard/seller/add-new-post", label: "Add Product" },
+  { path: "/dashboard/seller/manage-orders", label: "Manage Orders" },
+  { path: "/dashboard/orders", label: "Your orders" }, // Added Manage Orders link
   { path: "/dashboard/profile", label: "Profile" },
 ];
 

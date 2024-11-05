@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import products from "../../data/products.json";
+import React, { useState, useEffect } from "react";
 import ProductCards from "./ProductCards";
+import { useFetchAllProductsQuery } from "../../redux/features/products/productsApi";
 
 const TrendingProducts = () => {
-  const [visibleProducts, setVisibleProducts] = useState(8);
+  const { data, error, isLoading } = useFetchAllProductsQuery({
+    limit: 10, // Limit to 10 products for the trending section
+  });
 
-  const loadMoreProducts = () => {
-    setVisibleProducts((prevCount) => prevCount + 4);
-  };
+  const products = data?.products || []; // Ensure products is an array
 
   return (
     <section className="section__container product__container">
@@ -17,17 +17,13 @@ const TrendingProducts = () => {
         Collection of Trending Products at UniSell.
       </p>
 
-      {/* Products card */}
-      <ProductCards products={products.slice(0, visibleProducts)} />
-
-      {/* Load More button placed below the products */}
-      <div className="product__btn">
-        {visibleProducts < products.length && (
-          <button className="btn" onClick={loadMoreProducts}>
-            Load More
-          </button>
-        )}
-      </div>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p className="text-red-500">Error loading trending products.</p>
+      ) : (
+        <ProductCards products={products} />
+      )}
     </section>
   );
 };

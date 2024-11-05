@@ -6,6 +6,14 @@ export const authApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${getBaseUrl()}/api/auth`,
     credentials: "include",
+    prepareHeaders: (headers) => {
+      // Retrieve the token from localStorage or other secure storage
+      const token = localStorage.getItem("token");
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
   endpoints: (builder) => ({
     registerUser: builder.mutation({
@@ -54,10 +62,17 @@ export const authApi = createApi({
     }),
     editProfile: builder.mutation({
       query: (profileData) => ({
-        url: '/edit-profile',
-        method: 'PATCH',
+        url: "/edit-profile",
+        method: "PATCH",
         body: profileData,
       }),
+    }),
+    getTotalRevenue: builder.query({
+      query: () => ({
+        url: "/admin/sellers/revenue",
+        method: "GET",
+      }),
+      providesTags: ["Revenue"],
     }),
   }),
 });
@@ -69,7 +84,8 @@ export const {
   useGetUserQuery,
   useDeleteUserMutation,
   useUpdateUserRoleMutation,
-  useEditProfileMutation
+  useEditProfileMutation,
+  useGetTotalRevenueQuery,
 } = authApi;
 
 export default authApi;

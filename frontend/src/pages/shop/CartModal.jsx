@@ -1,29 +1,21 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import OrderSummary from "./OrderSummary";
 import {
   removeFromCart,
   updateQuantity,
 } from "../../redux/features/cart/cartSlice";
 
-const CartModal = ({ isOpen, onClose }) => {
+const CartModal = ({ isOpen, onClose, products }) => {
   const dispatch = useDispatch();
-  const products = useSelector((store) => store.cart.products); // Get products from Redux store
 
   const handleQuantity = (type, id) => {
     const payload = { type, id };
     dispatch(updateQuantity(payload));
   };
-
   const handleRemove = (e, id) => {
     e.preventDefault();
     dispatch(removeFromCart({ id }));
-  };
-
-  const handleCheckout = () => {
-    // Implement your checkout logic here
-    console.log("Processing checkout...");
-    // Redirect to checkout page or trigger checkout functionality
   };
 
   return (
@@ -55,14 +47,14 @@ const CartModal = ({ isOpen, onClose }) => {
             {products.length === 0 ? (
               <p>Your cart is empty.</p>
             ) : (
-              products.map((item) => (
+              products.map((item, index) => (
                 <div
-                  key={item._id}
+                  key={index}
                   className="flex flex-col md:flex-row md:items-center md:justify-between shadow-md md:p-5 p-2 mb-4"
                 >
                   <div className="flex items-center">
                     <span className="mr-4 px-1 bg-primary text-white rounded-full">
-                      0{item.quantity}
+                      0{index + 1}
                     </span>
                     <img
                       src={item.image}
@@ -72,10 +64,11 @@ const CartModal = ({ isOpen, onClose }) => {
                     <div>
                       <h5 className="text-lg font-medium">{item.name}</h5>
                       <p className="text-gray-600 text-sm">
-                        ${Number(item.price).toFixed(2)}
+                        PKR {Number(item.price).toFixed(2)}
                       </p>
                     </div>
                   </div>
+
                   <div className="flex flex-row md:justify-start justify-end items-center mt-2">
                     <button
                       onClick={() => handleQuantity("decrement", item._id)}
@@ -88,7 +81,7 @@ const CartModal = ({ isOpen, onClose }) => {
                     </span>
                     <button
                       onClick={() => handleQuantity("increment", item._id)}
-                      className="size-6 flex items-center justify-center px-1.5 rounded-full bg-gray-200 text-gray-700 hover:bg-primary hover:text-white"
+                      className="size-6 flex items-center justify-center px-1.5 rounded-full bg-gray-200 text-gray-700  hover:bg-primary hover:text-white"
                     >
                       +
                     </button>
@@ -105,11 +98,7 @@ const CartModal = ({ isOpen, onClose }) => {
               ))
             )}
           </div>
-          {products.length > 0 && (
-            <>
-              <OrderSummary />
-            </>
-          )}
+          {products.length > 0 && <OrderSummary />}
         </div>
       </div>
     </div>

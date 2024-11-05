@@ -39,7 +39,7 @@ const Navbar = () => {
   // Dropdown menu items
   const adminDropdownMenus = [
     { label: "Dashboard", path: "/dashboard/admin" },
-    { label: "profile", path: "/dashboard/profile" },
+    { label: "Profile", path: "/dashboard/profile" },
   ];
 
   const userDropdownMenus = [
@@ -50,7 +50,8 @@ const Navbar = () => {
   const sellerDropdownMenus = [
     { label: "Dashboard", path: "/dashboard/seller" },
     { label: "Manage Products", path: "/dashboard/seller/manage-products" },
-    { label: "Add New Post", path: "/dashboard/seller/add-new-post" }, // Restored Add New Post
+    { label: "Manage Orders", path: "/dashboard/seller/manage-orders" }, // Added Manage Orders link
+    { label: "Add New Post", path: "/dashboard/seller/add-new-post" },
     { label: "Profile", path: "/dashboard/profile" },
   ];
 
@@ -72,9 +73,6 @@ const Navbar = () => {
           <li className="link">
             <Link to="/shop">Shop</Link>
           </li>
-          {/* <li className="link">
-            <Link to="/">Pages</Link>
-          </li> */}
         </ul>
         <div className="nav__logo">
           <Link to="/">

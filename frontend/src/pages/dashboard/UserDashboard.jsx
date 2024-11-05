@@ -32,17 +32,25 @@ const UserDashboard = () => {
         <hr className="mt-5" />
         <ul className="space-y-5 pt-5">
           <li>
-            <NavLink
+            {/* <NavLink
               to="/dashboard"
               className={({ isActive }) =>
                 isActive ? "text-blue-600 font-bold" : "text-black"
               }
             >
               Dashboard
+            </NavLink> */}
+          </li>
+          <li>
+            <NavLink
+              to="/dashboard/orders"
+              className={({ isActive }) =>
+                isActive ? "text-blue-600 font-bold" : "text-black"
+              }
+            >
+              My Orders
             </NavLink>
           </li>
-          <li></li>
-          <li></li>
           <li>
             <NavLink
               to="/dashboard/profile"

@@ -29,18 +29,25 @@ const AdminDashboard = () => {
         </div>
         <hr className="mt-5" />
         <ul className="space-y-5 pt-5">
-          <li></li>
-          <li></li>
-          <li></li>
           <li>
             <NavLink
+              to="/dashboard/admin"
+              className={({ isActive }) =>
+                isActive ? "text-blue-600 font-bold" : "text-black"
+              }
+            >
+              Admin Dashboard
+            </NavLink>
+          </li>
+          <li>
+            {/* <NavLink
               to="/dashboard/admin/users"
               className={({ isActive }) =>
                 isActive ? "text-blue-600 font-bold" : "text-black"
               }
             >
               User List
-            </NavLink>
+            </NavLink> */}
           </li>
           <li>
             <NavLink
